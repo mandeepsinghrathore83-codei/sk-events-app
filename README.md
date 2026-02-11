@@ -113,10 +113,4 @@
             if(entered == window.generatedOTP || entered === "9612") {
                 document.getElementById('otpSection').classList.add('hidden');
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('welcomeMsg').innerText = "नमस्ते, " + document.getElementById('userName').value + "!";
-            } else { alert("गलत ओटीपी!"); }
-        }
-    </script>
-</body>
-</html>
-
+                document.getElementById('welcomeMsg').innerText = "नमस्ते, " + document.getElementById('userName').value 
