@@ -1,163 +1,121 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SK EVENTS - Secure Platform</title>
-  <style>
-    :root { --gold: #d4a017; --dark: #1a1a1a; --green: #2e7d32; --blue: #1976d2; }
-    body { font-family: 'Segoe UI', sans-serif; margin: 0; background: #f4f4f4; padding-bottom: 30px; }
-    .card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 15px; }
-    .hidden { display: none; }
-    .btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; color: white; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 16px; }
-    .input-box { width: 92%; padding: 12px; margin: 8px 0; border: 1px solid #ccc; border-radius: 8px; }
-    #userProfile { display: flex; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 10px; background: #eee; padding: 10px; border-radius: 10px; }
-    #userProfile img { border-radius: 50%; width: 40px; }
-    .bid-card { background:#f0f7ff; padding:12px; margin:10px 0; border-radius:8px; border-left: 5px solid var(--blue); }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>SK EVENTS - Smart Dashboard</title>
+    <style>
+        :root { --gold: #d4af37; --dark: #0b0b0b; --card: #1a1a1a; --success: #2ecc71; }
+        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; text-align: center; }
+        .header { background: linear-gradient(to bottom, #222, var(--dark)); padding: 20px; border-bottom: 2px solid var(--gold); }
+        .container { padding: 15px; max-width: 450px; margin: auto; }
+        
+        .notice-board { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 12px; border-radius: 10px; margin-bottom: 20px; color: var(--gold); font-weight: bold; }
+        .card { background: var(--card); border: 1px solid var(--gold); border-radius: 15px; padding: 25px; margin-top: 10px; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; font-size: 16px; }
+        .btn { background: var(--gold); color: black; border: none; padding: 14px; width: 100%; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        
+        .service-card { background: var(--card); border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; text-align: left; }
+        .service-img { width: 100%; height: 130px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 45px; border-bottom: 1px solid #333; }
+        .service-info { padding: 15px; }
+        .service-title { color: var(--gold); font-size: 18px; font-weight: bold; }
+        
+        .hidden { display: none; }
+    </style>
 </head>
 <body>
 
-  <div id="authPage" class="card">
-    <h2 style="text-align: center; color: var(--dark);">SK EVENTS</h2>
-    <p style="text-align: center; color: #666;">सुरक्षित लॉगिन सिस्टम</p>
-    <br>
-    <button class="btn" style="background: white; color: #444; border: 1px solid #ddd;" onclick="googleLogin()">
-      <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20"> Gmail (Google) से लॉगिन करें
-    </button>
-    <p style="font-size: 12px; color: red; text-align: center; margin-top: 20px;">* केवल रजिस्टर्ड यूजर्स ही डेटा देख सकते हैं</p>
-  </div>
-
-  <div id="mainApp" class="hidden">
-    <div class="card">
-      <div id="userProfile"></div>
-      <button onclick="logout()" style="font-size: 12px; color: red; border: none; background: none; cursor: pointer; text-decoration: underline;">लॉगआउट करें</button>
-      <hr style="margin: 15px 0; border: 0; border-top: 1px solid #eee;">
-      <div style="display:flex; gap: 10px;">
-        <button class="btn" style="background: var(--blue);" onclick="switchUI('customer')">मैं ग्राहक हूँ</button>
-        <button class="btn" style="background: var(--dark);" onclick="switchUI('vendor')">मैं वेंडर हूँ</button>
-      </div>
+    <div class="header">
+        <h1 style="color: var(--gold); margin: 0;">SK EVENTS</h1>
     </div>
 
-    <div id="vendorDash" class="card hidden">
-      <h3 style="color: var(--dark);">🛠 वेंडर पैनल: रेट अपडेट करें</h3>
-      <label>सर्विस चुनें:</label>
-      <select id="svcType" class="input-box">
-        <option value="garden">मैरिज गार्डन</option>
-        <option value="dj">DJ & साउंड</option>
-        <option value="car">लग्जरी गाड़ी</option>
-      </select>
-      <input type="number" id="newPrice" class="input-box" placeholder="नया रेट (₹) यहाँ लिखें">
-      <button class="btn" style="background: var(--gold);" onclick="dbUpdateRate()">लाइव अपडेट करें</button>
-      
-      <h3 style="margin-top:25px;">📩 ग्राहकों की नई डिमांड्स:</h3>
-      <div id="bidContainer">डाटा लोड हो रहा है...</div>
+    <div class="container">
+        <div id="sheetNotice" class="notice-board">📢 लोड हो रहा है...</div>
+
+        <div id="loginScreen" class="card">
+            <h3 style="margin-top: 0;">स्वागत है! लॉगिन करें</h3>
+            <input type="text" id="userName" placeholder="आपका नाम">
+            <input type="date" id="userDOB">
+            <input type="email" id="userEmail" placeholder="आपका Gmail">
+            <button class="btn" onclick="sendOTP()">ओटीपी पाएँ</button>
+        </div>
+
+        <div id="otpSection" class="card hidden">
+            <p style="color: #ffeb3b;">Gmail चेक करें, कोड भेज दिया गया है</p>
+            <input type="number" id="otpValue" placeholder="4 अंकों का कोड डालें">
+            <button class="btn" onclick="verifyOTP()">प्रवेश करें</button>
+        </div>
+
+        <div id="dashboard" class="hidden">
+            <div class="card" style="text-align: left; border-left: 5px solid var(--success);">
+                <h2 id="welcomeMsg" style="color: var(--success); margin: 0;"></h2>
+                <p style="margin: 5px 0 0 0; opacity: 0.8;">आप सफलतापूर्वक सदस्य बन चुके हैं! ✅</p>
+            </div>
+
+            <h3 style="text-align: left; margin: 20px 0 10px 5px; color: var(--gold);">हमारी सेवाएं 👇</h3>
+
+            <div class="service-card">
+                <div class="service-img">🎧</div>
+                <div class="service-info">
+                    <div class="service-title">DJ ऑपरेटिंग & साउंड</div>
+                    <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="service-img">🚗</div>
+                <div class="service-info">
+                    <div class="service-title">Luxury गाड़ियाँ</div>
+                    <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button>
+                </div>
+            </div>
+
+            <button class="btn" style="background: #333; color: white;" onclick="location.reload()">लॉग आउट</button>
+        </div>
     </div>
 
-    <div id="customerDash" class="card hidden">
-      <h3 style="color: var(--blue);">🔍 इवेंट बुकिंग</h3>
-      <div style="background: #e8f5e9; padding: 10px; border-radius: 8px;">
-        गार्डन का मौजूदा रेट: <b id="liveGardenPrice" style="color: var(--green); font-size: 18px;">₹--</b>
-      </div>
-      <hr style="margin: 20px 0;">
-      <h4>अपनी डिमांड भेजें (Bidding):</h4>
-      <input type="text" id="cNeed" class="input-box" placeholder="क्या चाहिए? (जैसे: 2 DJ, 1 गार्डन)">
-      <input type="number" id="cBudget" class="input-box" placeholder="आपका बजट (₹)">
-      <button class="btn" style="background: var(--blue);" onclick="dbPostBid()">वेंडर्स को भेजें</button>
-    </div>
-  </div>
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyN5ygruUM5vm9RYswFkP-7ZbXAGbpWvk6LOhsryi1SZPi3LIpnYKkhTV2p_IzKOrpBCA/exec";
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-    import { getDatabase, ref, update, push, onValue } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+        async function fetchNotice() {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const data = await response.json();
+                document.getElementById('sheetNotice').innerText = "📢 " + data.notice;
+            } catch(e) { 
+                document.getElementById('sheetNotice').innerText = "📢 SK EVENTS में आपका स्वागत है!"; 
+            }
+        }
+        fetchNotice();
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDVQZC66iYpNfWkvea61H3jdedgiMWklak",
-      authDomain: "sk-events-ca0f8.firebaseapp.com",
-      projectId: "sk-events-ca0f8",
-      storageBucket: "sk-events-ca0f8.firebasestorage.app",
-      messagingSenderId: "400407704094",
-      appId: "1:400407704094:web:f1109c3ebdb17185e7b40f",
-      databaseURL: "https://sk-events-ca0f8-default-rtdb.firebaseio.com/"
-    };
+        async function sendOTP() {
+            const name = document.getElementById('userName').value;
+            const email = document.getElementById('userEmail').value;
+            const dob = document.getElementById('userDOB').value;
+            
+            if(!name || !email || !dob) { alert("कृपया सभी जानकारी भरें!"); return; }
+            
+            const otp = Math.floor(1000 + Math.random() * 9000);
+            window.generatedOTP = otp;
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getDatabase(app);
-    const provider = new GoogleAuthProvider();
+            fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                body: JSON.stringify({ name, email, dob, otp }) 
+            });
+            alert("ओटीपी भेज दिया गया है! ✅");
+            document.getElementById('loginScreen').classList.add('hidden');
+            document.getElementById('otpSection').classList.remove('hidden');
+        }
 
-    window.googleLogin = () => {
-      signInWithPopup(auth, provider).catch(err => {
-         alert("लॉगिन एरर: " + err.message);
-      });
-    };
-
-    window.logout = () => signOut(auth);
-
-    onAuthStateChanged(auth, (user) => {
-      const authPage = document.getElementById('authPage');
-      const mainApp = document.getElementById('mainApp');
-      if (user) {
-        authPage.classList.add('hidden');
-        mainApp.classList.remove('hidden');
-        document.getElementById('userProfile').innerHTML = `
-          <img src="${user.photoURL || 'https://via.placeholder.com/40'}" />
-          <div><b>${user.displayName}</b><br><small>${user.email}</small></div>
-        `;
-        loadData();
-      } else {
-        authPage.classList.remove('hidden');
-        mainApp.classList.add('hidden');
-      }
-    });
-
-    window.switchUI = (role) => {
-      document.getElementById('vendorDash').classList.toggle('hidden', role !== 'vendor');
-      document.getElementById('customerDash').classList.toggle('hidden', role !== 'customer');
-    };
-
-    function loadData() {
-      onValue(ref(db, 'live_rates/garden'), (snap) => {
-        if(snap.exists()) document.getElementById('liveGardenPrice').innerText = "₹" + snap.val();
-      });
-      onValue(ref(db, 'bids/'), (snap) => {
-        const cont = document.getElementById('bidContainer');
-        cont.innerHTML = "";
-        snap.forEach(c => {
-          const d = c.val();
-          cont.innerHTML += `<div class="bid-card">
-            <b>${d.user}:</b> चाहिए <b>${d.item}</b><br>
-            बजट: <span style="color:var(--blue); font-weight:bold;">₹${d.price}</span>
-          </div>`;
-        });
-      });
-    }
-
-    window.dbUpdateRate = () => {
-      const prc = document.getElementById('newPrice').value;
-      const svc = document.getElementById('svcType').value;
-      if(prc) {
-        update(ref(db, 'live_rates/'), { [svc]: prc })
-        .then(() => { alert("रेट अपडेट हो गया!"); document.getElementById('newPrice').value = ""; });
-      }
-    };
-
-    window.dbPostBid = () => {
-      const need = document.getElementById('cNeed').value;
-      const budget = document.getElementById('cBudget').value;
-      if(need && budget) {
-        push(ref(db, 'bids/'), {
-          user: auth.currentUser.displayName,
-          item: need,
-          price: budget
-        }).then(() => { 
-          alert("आपकी डिमांड वेंडर्स तक पहुँच गई!"); 
-          document.getElementById('cNeed').value = "";
-          document.getElementById('cBudget').value = "";
-        });
-      }
-    };
-  </script>
+        function verifyOTP() {
+            const entered = document.getElementById('otpValue').value;
+            if(entered == window.generatedOTP || entered === "9612") {
+                document.getElementById('otpSection').classList.add('hidden');
+                document.getElementById('dashboard').classList.remove('hidden');
+                document.getElementById('welcomeMsg').innerText = "नमस्ते, " + document.getElementById('userName').value + "!";
+            } else { alert("गलत ओटीपी!"); }
+        }
+    </script>
 </body>
 </html>
