@@ -9,29 +9,21 @@
         body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; text-align: center; }
         .header { background: linear-gradient(to bottom, #222, var(--dark)); padding: 20px; border-bottom: 2px solid var(--gold); }
         .container { padding: 15px; max-width: 450px; margin: auto; }
-        
         .notice-board { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 12px; border-radius: 10px; margin-bottom: 20px; color: var(--gold); font-weight: bold; }
         .card { background: var(--card); border: 1px solid var(--gold); border-radius: 15px; padding: 25px; margin-top: 10px; }
         input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; font-size: 16px; }
         .btn { background: var(--gold); color: black; border: none; padding: 14px; width: 100%; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        
         .service-card { background: var(--card); border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; text-align: left; }
         .service-img { width: 100%; height: 130px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 45px; border-bottom: 1px solid #333; }
         .service-info { padding: 15px; }
         .service-title { color: var(--gold); font-size: 18px; font-weight: bold; }
-        
         .hidden { display: none; }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <h1 style="color: var(--gold); margin: 0;">SK EVENTS</h1>
-    </div>
-
+    <div class="header"><h1 style="color: var(--gold); margin: 0;">SK EVENTS</h1></div>
     <div class="container">
         <div id="sheetNotice" class="notice-board">📢 लोड हो रहा है...</div>
-
         <div id="loginScreen" class="card">
             <h3 style="margin-top: 0;">स्वागत है! लॉगिन करें</h3>
             <input type="text" id="userName" placeholder="आपका नाम">
@@ -39,52 +31,32 @@
             <input type="email" id="userEmail" placeholder="आपका Gmail">
             <button class="btn" onclick="sendOTP()">ओटीपी पाएँ</button>
         </div>
-
         <div id="otpSection" class="card hidden">
             <p style="color: #ffeb3b;">Gmail चेक करें, कोड भेज दिया गया है</p>
             <input type="number" id="otpValue" placeholder="4 अंकों का कोड डालें">
             <button class="btn" onclick="verifyOTP()">प्रवेश करें</button>
         </div>
-
         <div id="dashboard" class="hidden">
             <div class="card" style="text-align: left; border-left: 5px solid var(--success);">
                 <h2 id="welcomeMsg" style="color: var(--success); margin: 0;"></h2>
                 <p style="margin: 5px 0 0 0; opacity: 0.8;">आप सफलतापूर्वक सदस्य बन चुके हैं! ✅</p>
             </div>
-
             <h3 style="text-align: left; margin: 20px 0 10px 5px; color: var(--gold);">हमारी सेवाएं 👇</h3>
-
-            <div class="service-card">
-                <div class="service-img">🎧</div>
-                <div class="service-info">
-                    <div class="service-title">DJ ऑपरेटिंग & साउंड</div>
-                    <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="service-img">🚗</div>
-                <div class="service-info">
-                    <div class="service-title">Luxury गाड़ियाँ</div>
-                    <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button>
-                </div>
-            </div>
-
+            <div class="service-card"><div class="service-img">🎧</div><div class="service-info"><div class="service-title">DJ ऑपरेटिंग & साउंड</div><button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button></div></div>
+            <div class="service-card"><div class="service-img">🚗</div><div class="service-info"><div class="service-title">Luxury गाड़ियाँ</div><button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button></div></div>
             <button class="btn" style="background: #333; color: white;" onclick="location.reload()">लॉग आउट</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyN5ygruUM5vm9RYswFkP-7ZbXAGbpWvk6LOhsryi1SZPi3LIpnYKkhTV2p_IzKOrpBCA/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkQEiD8GF5aGG7l4RmfnMSQNmwrxAcEu36ddeox0r0KBxLypdJ_sH0W1aPzYoTMNfwTg/exec";
 
         async function fetchNotice() {
             try {
                 const response = await fetch(SCRIPT_URL);
                 const data = await response.json();
-                document.getElementById('sheetNotice').innerText = "📢 " + data.notice;
-            } catch(e) { 
-                document.getElementById('sheetNotice').innerText = "📢 SK EVENTS में आपका स्वागत है!"; 
-            }
+                document.getElementById('sheetNotice').innerText = "📢 " + (data.notice || "SK EVENTS में आपका स्वागत है!");
+            } catch(e) { document.getElementById('sheetNotice').innerText = "📢 SK EVENTS में आपका स्वागत है!"; }
         }
         fetchNotice();
 
@@ -92,20 +64,23 @@
             const name = document.getElementById('userName').value;
             const email = document.getElementById('userEmail').value;
             const dob = document.getElementById('userDOB').value;
-            
             if(!name || !email || !dob) { alert("कृपया सभी जानकारी भरें!"); return; }
             
             const otp = Math.floor(1000 + Math.random() * 9000);
             window.generatedOTP = otp;
+            const formData = new FormData();
+            formData.append("name", name); formData.append("email", email); formData.append("dob", dob); formData.append("otp", otp);
 
-            fetch(SCRIPT_URL, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify({ name, email, dob, otp }) 
-            });
-            alert("ओटीपी भेज दिया गया है! ✅");
-            document.getElementById('loginScreen').classList.add('hidden');
-            document.getElementById('otpSection').classList.remove('hidden');
+            try {
+                fetch(SCRIPT_URL, { method: 'POST', body: formData });
+                alert("ओटीपी भेज दिया गया है! ✅");
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('otpSection').classList.remove('hidden');
+            } catch(e) {
+                alert("Gmail चेक करें, कोड भेज दिया गया है।");
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('otpSection').classList.remove('hidden');
+            }
         }
 
         function verifyOTP() {
