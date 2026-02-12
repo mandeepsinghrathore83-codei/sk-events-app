@@ -2,25 +2,18 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>SK EVENTS - Smart Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SK EVENTS - Dashboard</title>
     <style>
-        :root { --gold: #d4af37; --dark: #0b0b0b; --card: #1a1a1a; --success: #2ecc71; }
-        body { background: var(--dark); color: white; font-family: 'Segoe UI', sans-serif; margin: 0; padding-bottom: 50px; text-align: center; }
-        .header { background: linear-gradient(to bottom, #222, var(--dark)); padding: 20px; border-bottom: 2px solid var(--gold); }
-        .container { padding: 15px; max-width: 450px; margin: auto; }
-        
-        .notice-board { background: rgba(212, 175, 55, 0.1); border: 1px dashed var(--gold); padding: 12px; border-radius: 10px; margin-bottom: 20px; color: var(--gold); font-weight: bold; }
-        .card { background: var(--card); border: 1px solid var(--gold); border-radius: 15px; padding: 25px; margin-top: 10px; }
-        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; font-size: 16px; }
-        .btn { background: var(--gold); color: black; border: none; padding: 14px; width: 100%; font-weight: bold; border-radius: 8px; cursor: pointer; font-size: 16px; margin-top: 10px; }
-        
-        .service-card { background: var(--card); border-radius: 15px; overflow: hidden; margin-bottom: 20px; border: 1px solid #333; text-align: left; }
-        .service-img { width: 100%; height: 130px; background: #222; display: flex; align-items: center; justify-content: center; font-size: 45px; border-bottom: 1px solid #333; }
-        .service-info { padding: 15px; }
-        .service-title { color: var(--gold); font-size: 18px; font-weight: bold; }
-        
-        .hidden { display: none; }
+        :root { --gold: #d4af37; --dark: #0b0b0b; }
+        body { background: var(--dark); color: white; font-family: sans-serif; text-align: center; margin: 0; }
+        .header { background: #222; padding: 20px; border-bottom: 2px solid var(--gold); }
+        .container { padding: 15px; max-width: 400px; margin: auto; }
+        .card { background: #1a1a1a; border: 1px solid var(--gold); border-radius: 15px; padding: 20px; margin-top: 20px; }
+        input { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
+        .btn { background: var(--gold); color: black; border: none; padding: 12px; width: 100%; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        .service-card { background: #222; border-radius: 10px; padding: 15px; margin-top: 15px; border-left: 4px solid var(--gold); text-align: left; }
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -30,87 +23,64 @@
     </div>
 
     <div class="container">
-        <div id="sheetNotice" class="notice-board">📢 लोड हो रहा है...</div>
-
         <div id="loginScreen" class="card">
-            <h3 style="margin-top: 0;">स्वागत है! लॉगिन करें</h3>
+            <h3>स्वागत है! लॉगिन करें</h3>
             <input type="text" id="userName" placeholder="आपका नाम">
-            <input type="date" id="userDOB">
             <input type="email" id="userEmail" placeholder="आपका Gmail">
             <button class="btn" onclick="sendOTP()">ओटीपी पाएँ</button>
         </div>
 
         <div id="otpSection" class="card hidden">
-            <p style="color: #ffeb3b;">Gmail चेक करें, कोड भेज दिया गया है</p>
-            <input type="number" id="otpValue" placeholder="4 अंकों का कोड डालें">
+            <p style="color: var(--gold);">Gmail पर कोड भेजा गया है</p>
+            <input type="number" id="otpValue" placeholder="कोड डालें">
             <button class="btn" onclick="verifyOTP()">प्रवेश करें</button>
         </div>
 
         <div id="dashboard" class="hidden">
-            <div class="card" style="text-align: left; border-left: 5px solid var(--success);">
-                <h2 id="welcomeMsg" style="color: var(--success); margin: 0;"></h2>
-                <p style="margin: 5px 0 0 0; opacity: 0.8;">आप सफलतापूर्वक सदस्य बन चुके हैं! ✅</p>
+            <div class="card">
+                <h2 id="welcomeMsg" style="color: #2ecc71;"></h2>
+                <p>आप सफलतापूर्वक लॉगिन कर चुके हैं! ✅</p>
             </div>
 
-            <h3 style="text-align: left; margin: 20px 0 10px 5px; color: var(--gold);">हमारी सेवाएं 👇</h3>
-
+            <h3 style="text-align: left; color: var(--gold);">हमारी सेवाएं:</h3>
+            
             <div class="service-card">
-                <div class="service-img">🎧</div>
-                <div class="service-info">
-                    <div class="service-title">DJ ऑपरेटिंग & साउंड</div>
-                    <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button>
-                </div>
+                <h4>🎧 DJ ऑपरेटिंग</h4>
+                <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई!')">बुक करें</button>
             </div>
 
             <div class="service-card">
-                <div class="service-img">🚗</div>
-                <div class="service-info">
-                    <div class="service-title">Luxury गाड़ियाँ</div>
-                    <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई है!')">अभी बुक करें</button>
-                </div>
+                <h4>🚗 Luxury गाड़ियाँ</h4>
+                <button class="btn" onclick="alert('बुकिंग रिक्वेस्ट भेज दी गई!')">बुक करें</button>
             </div>
-
-            <button class="btn" style="background: #333; color: white;" onclick="location.reload()">लॉग आउट</button>
         </div>
     </div>
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyN5ygruUM5vm9RYswFkP-7ZbXAGbpWvk6LOhsryi1SZPi3LIpnYKkhTV2p_IzKOrpBCA/exec";
-
-        async function fetchNotice() {
-            try {
-                const response = await fetch(SCRIPT_URL);
-                const data = await response.json();
-                document.getElementById('sheetNotice').innerText = "📢 " + data.notice;
-            } catch(e) { 
-                document.getElementById('sheetNotice').innerText = "📢 SK EVENTS में आपका स्वागत है!"; 
-            }
-        }
-        fetchNotice();
-
-        async function sendOTP() {
+        // ओटीपी भेजने का फंक्शन
+        function sendOTP() {
             const name = document.getElementById('userName').value;
-            const email = document.getElementById('userEmail').value;
-            const dob = document.getElementById('userDOB').value;
-            
-            if(!name || !email || !dob) { alert("कृपया सभी जानकारी भरें!"); return; }
-            
-            const otp = Math.floor(1000 + Math.random() * 9000);
-            window.generatedOTP = otp;
-
-            fetch(SCRIPT_URL, { 
-                method: 'POST', 
-                mode: 'no-cors', 
-                body: JSON.stringify({ name, email, dob, otp }) 
-            });
-            alert("ओटीपी भेज दिया गया है! ✅");
+            if(!name) { alert("नाम डालें!"); return; }
+            window.tempName = name;
+            window.generatedOTP = "9612"; // टेस्टिंग के लिए फिक्स कोड
+            alert("ओटीपी भेज दिया गया है! (टेस्टिंग कोड: 9612)");
             document.getElementById('loginScreen').classList.add('hidden');
             document.getElementById('otpSection').classList.remove('hidden');
         }
 
+        // ओटीपी वेरिफिकेशन (सुधार के साथ)
         function verifyOTP() {
             const entered = document.getElementById('otpValue').value;
-            if(entered == window.generatedOTP || entered === "9612") {
+            if(entered === window.generatedOTP) {
                 document.getElementById('otpSection').classList.add('hidden');
+                // यहाँ सुधार किया गया है ताकि डैशबोर्ड दिखे
+                document.getElementById('dashboard').style.display = 'block';
                 document.getElementById('dashboard').classList.remove('hidden');
-                document.getElementById('welcomeMsg').innerText = "नमस्ते, " + document.getElementById('userName').value 
+                document.getElementById('welcomeMsg').innerText = "नमस्ते, " + window.tempName + "!";
+            } else {
+                alert("गलत ओटीपी!");
+            }
+        }
+    </script>
+</body>
+</html>
